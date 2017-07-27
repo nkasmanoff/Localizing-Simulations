@@ -1,0 +1,20 @@
+Inside this directory is the program I used to determine the optimal geometry, skymaps, and most basically, localize a GRB in the sky for any number of detectors. 
+
+There are 2 types of files contained, one for testing sources according to sky positions (ie. input values of theta and phi) and another that tests sources based on pixel values (ie. NSIDE=8, 768 evenly spaced parts of the sky).
+
+For both types there are a few things that are intitially defined for both...
+1. Set number of detectors, based on what number is assigned the bool True
+2. Source strength and background, currently set for all as signal=500 counts, background=1000 counts. 
+3. Tilts of each detector, given as an input for whatever tilt from below the midplane (ie. tiltA=45). Allows for the possibility of alternating tilt patterns, by assigning another tilt value (ie. tiltA=40, tiltD1=30 means alternating detector tilts of 30° x 45°). 
+4. The response of these detectors, given in the function inside the function "response". Currently set as .76, the found cosine dependence for a GTM based on MEGAlib simulations 
+
+Depending on whether the file is a pixel loop or a sky position loop, there are 2 subtle differences. 
+a. The pixel loops runs based on the defined NSIDE, a value defined in healpy which is a power of 2 and corresponds to the # of pixels.
+b. The sky position loops are based on a given tilt from zenith (theta) and azimuthal position (phi). I defined these as loops in linspace, and however much of the sky needed to be sampled through this method is pretty straightforward. 
+
+HOW IT WORKS:
+Given everything is set, the program will take each scintillator and create the normal vector of each. To account for the z shielding, there is an if statement included that if the source is more the 90° separated from the normal of that given detector, automatically assume the source has no impact here*.  The relative # of counts in each from the burst is proportional to the response function as defined earlier in the code. Once obtaining the relative strength of the burst in each detector, the position is localized via identifying the minimum chi squared value after sampling the entire sky via coarse-to-fine sampling. After "guessing" the position of the burst, the program repeats this scenario for this sky position/pixel x times to get a sizeable inventory of samples, and uses the average to determine the average localization offset at this point. By running through a certain part of (or entire) sky, you can see how well the given # of detectors + geometry is at doing its job. From here, its easy to identify the advantages and disadvantages of given geometries and numbers. 
+
+
+HOW TO RUN: 
+Set true how many scintillators you want to be a part of the instrument, set the either alternating or not detector tilts via the array tiltA = [] and tiltD1 = [], how many points in the sky via thetaS and phiS (or NSIDE if a pixel loop!), how many times to sample each position via x=# of times, the source strength Ao, the background intensity "bg", and the response via the response function. * It is possible for points far below the midplane to not be detectable and thus break the loop, since the detectors are only able to pick up signals within 90° of each detector. In this case, run the cells at the bottom which start with the variable "blockedpart". This accounts for the impossible to detect signals, and allows you to have a full size array for creating skymaps if necessary * . Since this is in a python notebook, simply run all cells to output the source position and the average offset from it. Localizing-Simulations
