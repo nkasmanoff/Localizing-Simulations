@@ -17,4 +17,16 @@ Given everything is set, the program will take each scintillator and create the 
 
 
 HOW TO RUN: 
-Set true how many scintillators you want to be a part of the instrument, set the either alternating or not detector tilts via the array tiltA = [] and tiltD1 = [], how many points in the sky via thetaS and phiS (or NSIDE if a pixel loop!), how many times to sample each position via x=# of times, the source strength Ao, the background intensity "bg", and the response via the response function. * It is possible for points far below the midplane to not be detectable and thus break the loop, since the detectors are only able to pick up signals within 90° of each detector. In this case, run the cells at the bottom which start with the variable "blockedpart". This accounts for the impossible to detect signals, and allows you to have a full size array for creating skymaps if necessary * . Since this is in a python notebook, simply run all cells to output the source position and the average offset from it. Localizing-Simulations
+Set true how many scintillators you want to be a part of the instrument, set the either alternating or not detector tilts via the array tiltA = [] and tiltD1 = [], how many points in the sky via thetaS and phiS (or NSIDE if a pixel loop!), how many times to sample each position via x=# of times, the source strength Ao, the background intensity "bg", and the response via the response function. * It is possible for points far below the midplane to not be detectable and thus break the loop, since the detectors are only able to pick up signals within 90° of each detector. In this case, run the cells at the bottom which start with the variable "blockedpart". This accounts for the impossible to detect signals, and allows you to have a full size array for creating skymaps if necessary * . Since this is in a python notebook, simply run all cells to output the source position and the average offset from it. 
+
+
+UPDATE 8/17:
+I've included from MEGAlib, the geometry files used to determine the basic scintillator properties of each GTM (can be built on for more advanced analysis), as well as TAPv*.geo.setup files which are the beginning stages of designing the rest of the spacecraft. The use of these files is for determining what shadwoing effects, if any, result from placing other instruments and features of TAP near the GTMs. By using these programs it is possible to figure out how the localization capabilities of TAP change, and then apply those changes to the skymap*.ipynb files included as well. In the newest python notebook uploaded, I've taken into account the shadowing effects of placing a GTM directly next to the X-ray Telescope, and outputted the resulting influence on localizations. 
+
+Localizing-Simulations
+
+
+
+
+
+
