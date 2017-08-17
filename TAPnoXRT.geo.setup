@@ -1,0 +1,101 @@
+Name TAPv1.geo.setup
+Verision 0.0
+
+// This is the entire world for your detector
+// In this sphere, you must put the whole detector
+// And this is the sphere from which the photons will be thrown at the detector.  
+SurroundingSphere 1000.0 0.0 0.0 0.0 1000.0
+
+// The Mother Volume of the Detector Configuration:
+// It can be any shape - but all the detector bits must be included in here. 
+Volume WorldVolume
+WorldVolume.Material Vacuum
+WorldVolume.Visibility 0
+WorldVolume.Color 0
+WorldVolume.Shape BOX 900. 900. 900. 
+WorldVolume.Mother 0
+
+// These are files that you need to include from outside this particular tiny file
+// I'm putting the detector properties here - only because this is something 
+// you get from testing of specific materials - or from a book :) 
+Include $MEGALIB/resource/examples/geomega/materials/Materials.geo
+
+
+//Here I will define the big Al cylinder, and make the rest of the stuff relative to it
+// This is the symetric case 3a + b
+
+
+//This chunk will be the frame where everything else is relatively placed, will be a box of x by y by z cm 
+Volume TAPFrame
+TAPFrame.Material Vacuum
+TAPFrame.Visibility 1
+TAPFrame.Color 0
+TAPFrame.Shape BRIK 200 200 200
+TAPFrame.Mother WorldVolume
+
+
+// XRT: Approximated as an aluminum cylinder not sensitive to detecting GRB's! 
+Volume XRT
+XRT.Material Vacuum
+XRT.Visibility 1
+XRT.Color 0
+XRT.Position 0 0 0
+XRT.Shape TUBS 0 65 100 0 360
+XRT.Mother TAPFrame
+ 
+//This is the hole which serves as the vacuum inside the xrt
+Volume XRT_Hole
+XRT_Hole.Material Vacuum
+XRT_Hole.Visibility 1
+XRT_Hole.Color 0
+XRT_Hole.Position 0 0 0
+XRT_Hole.Shape TUBS 0 64 99.5 0 360
+XRT_Hole.Mother TAPFrame
+
+
+// This bit defines scintillator and the sensitive material 
+// It includes all the detector properties
+// Note that this is what is used for the trigger information 
+Scintillator  SciCSI
+
+SciCSI.SensitiveVolume CSITube
+SciCSI.DetectorVolume CSITube
+
+SciCSI.StructuralPitch 0. 0. 0.
+SciCSI.StructuralOffset 0. 0. 0.
+
+// These are important for the trigger
+SciCSI.NoiseThreshold   5 
+SciCSI.TriggerThreshold   10
+
+// These we get from actual data on CsI
+SciCSI.EnergyResolution Gauss   40    40   5
+SciCSI.EnergyResolution Gauss  100   100   7.5
+SciCSI.EnergyResolution Gauss  662   662   20
+SciCSI.EnergyResolution Gauss  2000  2000  33
+SciCSI.EnergyResolution Gauss  5000  5000  50
+
+
+
+//Build single CsI Cylinder
+
+Volume CSITube
+//Define volume material
+CSITube.Material CsI
+//Define detector visibility
+CSITube.Visibility 1 
+CSITube.Color 2
+//Now to make it actually a cylinder!
+CSITube.Shape TUBS 0 6.35 .635 0 360
+//This is the most important part... now the file knows that this tube is in the world so it can actually read it and will trigger as a result
+CSITube.Mother TAPFrame
+CSITube.Position 70 0 -93
+CSITube.Rotation 0 45 0 
+// We need to give it a requirement to read-out
+Trigger MainTrigger
+MainTrigger.Veto false
+MainTrigger.TriggerByDetector true
+MainTrigger.Detector SciCSI 1
+
+
+
