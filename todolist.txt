@@ -1,0 +1,38 @@
+Work needed:
+0) This modeling can be done with GEANT (items 1-4).
+   (Items 5-6 are done with localization s/w.)
+
+1) Effective area vs theta,phi coordinates around a single GTM detector module.
+   (This theta,phi coordinates is centered on the module)
+1a) Do this for several energies.  (values TBD)
+
+2) Do this for a "bare" detector module (ie no other mass around it).
+
+3) Do this for a few simple/generic cases of large passive material objects located
+   nearby a detector module.
+   Objects of concern are:
+       An XRT and IRT telescope tube  (use a solid cylinder of "matter foam"),
+       Sunshade wall   (use a square plate of material X of density Y),
+       Instrument Deck plate   (use a circular plate of material X of density Y),
+   a) Use cylinder made of aluminum(?) "foam"
+   b) place the cylinder in the sysmetric location wrt the GTM module,  and
+   c) place the cylinder in the off-to-the-side (asysmetric) location wrt the GTM module.
+
+4) Do this with a graded-Z sheild added just behind the conical section of the PMT housing.
+   (This addresses a concern raised by the Fermi people that enough photons
+    come in through "back hemisphere of module's response tht is distorts
+    the final position by a significant amount.  So a graded-Z shield is simple
+    and it might reduce the problem.)
+
+5) Choose some different geometries of detectors modules:
+   a) How mnay modules?  At least 6-8; how many more (12?).
+      We need to cover that "back end" of the observatory
+      when the Observatory is looking at a point near the Earth horizon.
+   b) What is the pattern of boresights on the 4pi sphere?
+
+
+6) With these few EffArea vs theta,phi,energy matrices,  they will be run through
+the burst-location calculation software.  To see what these local-masses
+do to the "ideal" burst locations, ie how many degress is the location moved?
+
+
